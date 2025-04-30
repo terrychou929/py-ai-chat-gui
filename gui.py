@@ -1,5 +1,4 @@
-import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QTextEdit, QLineEdit, QPushButton
+from PyQt6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QTextEdit, QLineEdit, QPushButton
 from PyQt6.QtCore import QThread, pyqtSignal
 from ai import AIChat
 
@@ -16,7 +15,7 @@ class ChatThread(QThread):
         # 調用 AI 模塊生成回應
         response, new_chat_history_ids = self.ai_chat.generate_response(self.user_input, self.chat_history_ids)
         self.response_received.emit(response)
-        # 更新對話歷史（需要在主線程中處理）
+        # 更新對話歷史
         self.ai_chat.update_chat_history(new_chat_history_ids)
 
 class ChatWindow(QMainWindow):
@@ -65,12 +64,3 @@ class ChatWindow(QMainWindow):
     def update_chat_history(self, response):
         # 顯示 AI 回應
         self.chat_history.append(f"AI: {response}")
-
-def main():
-    app = QApplication(sys.argv)
-    window = ChatWindow()
-    window.show()
-    sys.exit(app.exec())
-
-if __name__ == "__main__":
-    main()
